@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "build>=0.7.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hierarchical-transformer"
+version = "1.0.0"
+description = "A library for transforming hierarchical spreadsheet data into normalized tabular format"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Jack Thompson", email = "jthompson@messinagroupinc.com"},
+]
+maintainers = [
+    {name = "Jack Thompson", email = "jthompson@messinagroupinc.com"},
+]
+keywords = ["data", "transformation", "pandas", "spreadsheet", "hierarchical"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Data Engineers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Data Science",
+]
+
+dependencies = [
+    "pandas>=1.0.0",
+    "numpy>=1.19.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=22.0",
+    "isort>=5.0",
+    "flake8>=3.9",
+    "mypy>=0.910",
+]
+docs = [
+    "sphinx>=4.0",
+    "sphinx-rtd-theme>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Messina-Group/hierarchical-transformer"
+Documentation = "https://hierarchical-transformer.readthedocs.io/"
+Repository = "https://github.com/Messina-Group/hierarchical-transformer.git"
+"Bug Tracker" = "https://github.com/Messina-Group/hierarchical-transformer/issues"
+Changelog = "https://github.com/Messina-Group/hierarchical-transformer/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ["hierarchical_transformer"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=hierarchical_transformer"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+source = ["hierarchical_transformer"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py37", "py38", "py39", "py310"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pandas.*",
+    "numpy.*",
+]
+ignore_missing_imports = true
