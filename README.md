@@ -6,6 +6,99 @@
 
 A Python library for transforming hierarchical spreadsheet data into normalized tabular format. This library specializes in converting complex, multi-row spreadsheet data into clean, analysis-ready tabular formats.
 
+## Example Transformation
+
+### Before (Original Hierarchical Format)
+![Admission Census Before](example_hierarchical.png)
+
+### After (Transformed Tabular Format)
+
+|
+ patient_name      
+|
+ pan     
+|
+ admit_date 
+|
+ current_cert_period      
+|
+ primary_diagnosis                           
+|
+ case_manager        
+|
+ emergency_contact      
+|
+ emergency_phone 
+|
+|
+------------------
+|
+---------
+|
+------------
+|
+-------------------------
+|
+--------------------------------------------
+|
+--------------------
+|
+---------------------
+|
+----------------
+|
+|
+ SMITH, JOHN R    
+|
+ SUN1234 
+|
+ 3/15/2024  
+|
+ 05/20/2024 - 07/18/2024 
+|
+ ICD10: M17.0 - Osteoarthritis, bilateral   
+|
+ MARTINEZ, SARAH R   
+|
+ SMITH, MARY          
+|
+ 5558889999     
+|
+|
+ JOHNSON, EMILY K 
+|
+ SUN5678 
+|
+ 4/1/2024   
+|
+ 05/25/2024 - 07/23/2024 
+|
+ ICD10: J44.9 - COPD, unspecified          
+|
+ THOMPSON, ROBERT J  
+|
+ JOHNSON, DAVID       
+|
+ 5552223333     
+|
+|
+ WILLIAMS, SUSAN M
+|
+ SUN9012 
+|
+ 4/15/2024  
+|
+ 05/30/2024 - 07/28/2024 
+|
+ ICD10: I50.9 - Heart failure, unspecified 
+|
+ GARCIA, LISA M     
+|
+ WILLIAMS, JAMES      
+|
+ 5554447777     
+|
+
 ## Features
 
 - Transform hierarchical data into flat, tabular structure
@@ -28,13 +121,17 @@ from hierarchical_transformer import DataTransformer, TransformerConfig
 
 # Define configuration
 config = TransformerConfig(
-    identifier_field="Customer ID",
+    identifier_field="Patient Name",
     target_fields=[
-        "Customer ID",
-        "Name",
-        "Address",
-        "Order Total"
-    ]
+        "Patient Name",
+        "PAN",
+        "Admit Date",
+        "Current Cert Period",
+        "Primary Diagnosis",
+        "Case Manager / Primary RN",
+        "Emergency Contact"
+    ],
+    date_columns=["Admit Date"]
 )
 
 # Initialize transformer
@@ -48,16 +145,96 @@ result_df = transformer.transform(input_df, config)
 
 The `TransformerConfig` class supports the following parameters:
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|----------|
-| skip_rows | int | Number of header rows to skip | 0 |
-| drop_columns | List[int] | Column indices to drop | None |
-| date_columns | List[str] | Columns to convert to datetime | None |
-| identifier_field | str | Field that marks start of new record | Required |
-| target_fields | List[str] | Fields to extract | Required |
-| field_aliases | Dict[str, str] | Alternative names for fields | None |
-| search_radius | int | Rows to search for values | 10 |
-| column_search_radius | int | Columns to search right | 5 |
+|
+ Parameter 
+|
+ Type 
+|
+ Description 
+|
+ Default 
+|
+|
+-----------
+|
+------
+|
+-------------
+|
+----------
+|
+|
+ skip_rows 
+|
+ int 
+|
+ Number of header rows to skip 
+|
+ 0 
+|
+|
+ drop_columns 
+|
+ List[int] 
+|
+ Column indices to drop 
+|
+ None 
+|
+|
+ date_columns 
+|
+ List[str] 
+|
+ Columns to convert to datetime 
+|
+ None 
+|
+|
+ identifier_field 
+|
+ str 
+|
+ Field that marks start of new record 
+|
+ Required 
+|
+|
+ target_fields 
+|
+ List[str] 
+|
+ Fields to extract 
+|
+ Required 
+|
+|
+ field_aliases 
+|
+ Dict[str, str] 
+|
+ Alternative names for fields 
+|
+ None 
+|
+|
+ search_radius 
+|
+ int 
+|
+ Rows to search for values 
+|
+ 10 
+|
+|
+ column_search_radius 
+|
+ int 
+|
+ Columns to search right 
+|
+ 5 
+|
 
 ## Data Validation
 
@@ -69,15 +246,11 @@ validator = DataValidator()
 
 # Define validation rules
 rules = {
-    "required_columns": ["ID", "Name", "Amount"],
+    "required_columns": ["Patient Name", "PAN", "Admit Date"],
     "date_format": {
-        "Transaction_Date": "%Y-%m-%d"
+        "Admit Date": "%m/%d/%Y"
     },
-    "numeric_columns": ["Amount"],
-    "min_value": {
-        "Amount": 0
-    },
-    "unique_columns": ["ID"]
+    "unique_columns": ["PAN"]
 }
 
 # Validate data
@@ -87,6 +260,7 @@ if result.is_valid:
 else:
     print("Validation errors:", result.errors)
 ```
+
 
 ## Use Cases
 
