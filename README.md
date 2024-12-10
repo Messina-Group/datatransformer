@@ -60,96 +60,16 @@ result_df = transformer.transform(input_df, config)
 
 The `TransformerConfig` class supports the following parameters:
 
-|
- Parameter 
-|
- Type 
-|
- Description 
-|
- Default 
-|
-|
------------
-|
-------
-|
--------------
-|
-----------
-|
-|
- skip_rows 
-|
- int 
-|
- Number of header rows to skip 
-|
- 0 
-|
-|
- drop_columns 
-|
- List[int] 
-|
- Column indices to drop 
-|
- None 
-|
-|
- date_columns 
-|
- List[str] 
-|
- Columns to convert to datetime 
-|
- None 
-|
-|
- identifier_field 
-|
- str 
-|
- Field that marks start of new record 
-|
- Required 
-|
-|
- target_fields 
-|
- List[str] 
-|
- Fields to extract 
-|
- Required 
-|
-|
- field_aliases 
-|
- Dict[str, str] 
-|
- Alternative names for fields 
-|
- None 
-|
-|
- search_radius 
-|
- int 
-|
- Rows to search for values 
-|
- 10 
-|
-|
- column_search_radius 
-|
- int 
-|
- Columns to search right 
-|
- 5 
-|
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|----------|
+| skip_rows | int | Number of header rows to skip | 0 |
+| drop_columns | List[int] | Column indices to drop | None |
+| date_columns | List[str] | Columns to convert to datetime | None |
+| identifier_field | str | Field that marks start of new record | Required |
+| target_fields | List[str] | Fields to extract | Required |
+| field_aliases | Dict[str, str] | Alternative names for fields | None |
+| search_radius | int | Rows to search for values | 10 |
+| column_search_radius | int | Columns to search right | 5 |
 
 ## Data Validation
 
